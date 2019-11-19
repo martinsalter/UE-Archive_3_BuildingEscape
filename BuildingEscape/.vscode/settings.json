@@ -2,6 +2,7 @@
 	"files.exclude": {
 		"D:/Repos/Unreal Developer Archive/Section 3 - Building Escape/BuildingEscape/.vscode": true,
 		"D:/Repos/Unreal Developer Archive/Section 3 - Building Escape/BuildingEscape/Content": true,
-		"D:/Repos/Unreal Developer Archive/Section 3 - Building Escape/BuildingEscape/Intermediate": true
+		"D:/Repos/Unreal Developer Archive/Section 3 - Building Escape/BuildingEscape/Intermediate": true,
+		"D:/Repos/Unreal Developer Archive/Section 3 - Building Escape/BuildingEscape/Saved": true
 	}
 }
