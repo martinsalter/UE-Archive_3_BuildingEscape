@@ -6,7 +6,11 @@
 **/DerivedDataCache
 **/Intermediate
 **/Saved
-BuildingEscape/Content/StarterContent/
+BuildingEscape/Content/StarterContent/Audio
+BuildingEscape/Content/StarterContent/HDRI
+BuildingEscape/Content/StarterContent/Maps
+BuildingEscape/Content/StarterContent/Textures
+
 # Built data for maps
 *_BuiltData.uasset
 
