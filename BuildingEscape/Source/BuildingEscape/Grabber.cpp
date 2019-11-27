@@ -1,10 +1,10 @@
 // (c) Copright Martisan 2019.
 
-
 #include "Grabber.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "DrawDebugHelpers.h"
+
 
 #define OUT
 
@@ -25,7 +25,16 @@ void UGrabber::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerController = GetWorld()->GetFirstPlayerController();
-	
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	if(PhysicsHandle == nullptr){
+		UE_LOG(LogTemp, Error, TEXT("Unable to find UPhysicsHandleComponent on %s"), *(GetOwner()->GetName()));
+	}
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	if(InputComponent != nullptr){
+		UE_LOG(LogTemp, Warning, TEXT("Found InputComponent"))
+		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
+	}
 }
 
 
@@ -45,8 +54,40 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	FVector GrabberLocation = LookPosition + LookDirection.Vector() * Reach;
 
 	// Visualise grabber direction and distance
-	DrawDebugLine(GetWorld(),LookPosition,GrabberLocation,FColor(255, 0, 0),false,3.0f, 0.0f, 5.0f);
+	DrawDebugLine(
+		GetWorld(),
+		LookPosition,
+		GrabberLocation,
+		FColor(255, 0, 0),
+		false, 
+		0.0f, 
+		0.0f, 
+		5.0f
+		);
 
-
+	// Raycast out to GrabberLocation
+	FHitResult GrabberHitResult;
+	bool bGrabberHit = GetWorld()->LineTraceSingleByObjectType(
+		OUT GrabberHitResult,
+		LookPosition,
+		GrabberLocation,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+		FCollisionQueryParams(false)
+	);
+	// See what we hit
+	if (bGrabberHit)
+	{
+		AActor* ActorHit = GrabberHitResult.GetActor();
+		UE_LOG(LogTemp, Warning, TEXT("Grabber is touching %s"), *(ActorHit->GetName()))
+	}
 }
 
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab Pressed"))
+}
+
+void UGrabber::Release()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab Released"))
+}
